@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foodverse — Jelajah Kuliner Digital</title>
+<meta name="description" content="Foodverse, jelajahi menu kuliner digital dengan filter kategori interaktif.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain-overlay"></div>
+
+<header>
+  <div class="brand">🪐 Food<span>verse</span></div>
+  <nav class="nav-links" id="navLinks">
+    <a href="#home">Beranda</a>
+    <a href="#menu">Menu</a>
+    <a href="#about">Tentang</a>
+  </nav>
+  <button class="burger" id="burger"><i class="fa-solid fa-bars"></i></button>
+</header>
+
+<!-- ===== HERO — signature: orbit makanan ===== -->
+<section class="hero" id="home">
+  <span class="eyebrow"><i class="fa-solid fa-satellite"></i> SELAMAT DATANG DI ALAM SEMESTA RASA</span>
+  <h1>Jelajahi <span class="accent">Foodverse</span><br>Kuliner Digitalmu</h1>
+  <p class="sub">Satu tempat untuk menemukan menu favorit — dari makanan berat, minuman segar, dessert manis, sampai snack renyah. Filter, cari, dan simpan favoritmu.</p>
+
+  <!-- orbit: representasi visual "universe" kuliner -->
+  <div class="orbit-stage" aria-hidden="true">
+    <div class="orbit-core">🪐</div>
+    <div class="orbit-ring ring-1">
+      <div class="orbit-item" style="top:0;left:50%;">🍔</div>
+      <div class="orbit-item" style="top:100%;left:50%;">🍩</div>
+    </div>
+    <div class="orbit-ring ring-2">
+      <div class="orbit-item" style="top:50%;left:0;">🍜</div>
+      <div class="orbit-item" style="top:50%;left:100%;">🥤</div>
+      <div class="orbit-item" style="top:0;left:50%;">🍣</div>
+    </div>
+    <div class="orbit-ring ring-3">
+      <div class="orbit-item" style="top:0;left:50%;">🍕</div>
+      <div class="orbit-item" style="top:100%;left:50%;">🍦</div>
+      <div class="orbit-item" style="top:50%;left:0;">🍟</div>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#menu" class="btn btn-primary">JELAJAHI MENU <i class="fa-solid fa-arrow-down"></i></a>
+    <a href="#about" class="btn btn-ghost">TENTANG FOODVERSE</a>
+  </div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section id="menu">
+  <div class="section-head reveal">
+    <span class="tag">// MENU KAMI</span>
+    <h2>Temukan Rasa yang Kamu Cari</h2>
+    <p>Gunakan pencarian atau filter kategori untuk menjelajahi menu Foodverse.</p>
+  </div>
+
+  <div class="menu-controls reveal">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Cari menu, misal: nasi goreng...">
+    </div>
+
+    <div class="pill-row">
+      <div class="pill-indicator" id="pillIndicator"></div>
+      <button class="pill active" data-category="semua">Semua</button>
+      <button class="pill" data-category="berat">Makanan Berat</button>
+      <button class="pill" data-category="minuman">Minuman</button>
+      <button class="pill" data-category="dessert">Dessert</button>
+      <button class="pill" data-category="snack">Snack</button>
+    </div>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+    <!-- kartu menu dirender otomatis lewat js/main.js dari data/menu.js -->
+  </div>
+  <div class="empty-state" id="emptyState">
+    <i class="fa-solid fa-satellite-dish"></i>
+    <p>Menu tidak ditemukan di galaksi ini. Coba kata kunci atau kategori lain.</p>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="section-head reveal">
+    <span class="tag">// TENTANG</span>
+    <h2>Kenapa Foodverse?</h2>
+  </div>
+  <div class="about-strip reveal">
+    <div class="about-card">
+      <div class="icon">⚡</div>
+      <h3>Cepat & Interaktif</h3>
+      <p>Filter dan cari menu secara instan tanpa reload halaman.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">🛰️</div>
+      <h3>Kategori Jelas</h3>
+      <p>Menu terorganisir rapi dari makanan berat sampai snack ringan.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">❤️</div>
+      <h3>Simpan Favorit</h3>
+      <p>Tandai menu favoritmu dan temukan lagi dengan mudah.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">🪐 Food<span style="color:var(--gold)">verse</span></div>
+  <p>© 2026 Foodverse — Jelajah Kuliner Digital.</p>
+</footer>
+
+<script src="menu.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
