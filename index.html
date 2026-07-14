@@ -3,122 +3,1458 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Foodverse — Jelajah Kuliner Digital</title>
-<meta name="description" content="Foodverse, jelajahi menu kuliner digital dengan filter kategori interaktif.">
+<title>Rempah Nusantara — Restoran</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     TOKEN WARNA & TIPOGRAFI — tema cute cartoon, ubah di sini
+     ========================================================= */
+  :root{
+    --bg:#fff6e9;
+    --bg-alt:#ffead2;
+    --bg-card:#ffffff;
+    --gold:#ffb84c;
+    --gold-light:#ffd27a;
+    --red:#ff6f61;
+    --red-light:#ff8f82;
+    --cream:#5a3d2b;
+    --green:#6fcf97;
+    --muted:#9b7a63;
+    --font-display:'Fredoka', sans-serif;
+    --font-body:'Nunito', sans-serif;
+    --font-mono:'Nunito', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* =========================================================
+     BACKGROUND CUTE CARTOON — langit, matahari, awan, bukit & karakter makanan lucu
+     ========================================================= */
+  .bg-scene{
+    position:fixed; inset:0; z-index:0;
+    overflow:hidden;
+    background:linear-gradient(180deg, #bfeaf7 0%, #fff6e9 42%, #ffead2 100%);
+  }
+
+  /* matahari imut dengan wajah */
+  .bg-scene .sun{
+    position:absolute; top:70px; right:10%;
+    width:110px; height:110px; border-radius:50%;
+    background:radial-gradient(circle at 35% 32%, #ffe9a8, #ffb84c 75%);
+    box-shadow:0 0 70px rgba(255,184,76,.55);
+    animation:sunBob 5s ease-in-out infinite;
+  }
+  .bg-scene .sun .eye{
+    position:absolute; top:42px; width:7px; height:9px; border-radius:50%;
+    background:#7a4b21;
+  }
+  .bg-scene .sun .eye.l{left:34px;}
+  .bg-scene .sun .eye.r{left:60px;}
+  .bg-scene .sun .smile{
+    position:absolute; top:54px; left:41px;
+    width:22px; height:11px;
+    border-bottom:4px solid #7a4b21;
+    border-radius:0 0 20px 20px;
+  }
+  .bg-scene .sun .cheek{
+    position:absolute; top:52px; width:10px; height:6px; border-radius:50%;
+    background:rgba(255,111,97,.45);
+  }
+  .bg-scene .sun .cheek.l{left:20px;}
+  .bg-scene .sun .cheek.r{left:74px;}
+  @keyframes sunBob{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-14px) rotate(6deg);}
+  }
+
+  /* awan mengambang */
+  .bg-scene .cloud{
+    position:absolute;
+    background:#fff;
+    border-radius:100px;
+    opacity:.85;
+  }
+  .bg-scene .cloud::before, .bg-scene .cloud::after{
+    content:""; position:absolute; background:#fff; border-radius:50%;
+  }
+  .bg-scene .c1{width:120px; height:40px; top:14%; left:-160px; animation:driftCloud 34s linear infinite;}
+  .bg-scene .c1::before{width:52px; height:52px; top:-26px; left:14px;}
+  .bg-scene .c1::after{width:38px; height:38px; top:-18px; left:60px;}
+  .bg-scene .c2{width:90px; height:32px; top:32%; left:-140px; animation:driftCloud 26s linear infinite; animation-delay:-10s;}
+  .bg-scene .c2::before{width:40px; height:40px; top:-20px; left:10px;}
+  .bg-scene .c2::after{width:30px; height:30px; top:-14px; left:46px;}
+  .bg-scene .c3{width:100px; height:34px; top:8%; left:-150px; animation:driftCloud 42s linear infinite; animation-delay:-22s;}
+  .bg-scene .c3::before{width:44px; height:44px; top:-22px; left:12px;}
+  .bg-scene .c3::after{width:32px; height:32px; top:-16px; left:52px;}
+  @keyframes driftCloud{
+    from{transform:translateX(0);}
+    to{transform:translateX(calc(100vw + 300px));}
+  }
+
+  /* bukit hijau di bawah */
+  .bg-scene .hill{
+    position:absolute; bottom:-120px;
+    border-radius:50%;
+    opacity:.55;
+  }
+  .bg-scene .h1{
+    width:900px; height:340px; left:-220px;
+    background:radial-gradient(circle at 50% 30%, #a8e6b8, #6fcf97 75%);
+  }
+  .bg-scene .h2{
+    width:800px; height:300px; right:-260px; bottom:-150px;
+    background:radial-gradient(circle at 50% 30%, #ffd9a0, #ffb84c 75%);
+    opacity:.35;
+  }
+
+  /* karakter makanan lucu mengambang */
+  .kawaii{
+    position:absolute;
+    filter:drop-shadow(0 10px 14px rgba(90,61,43,.18));
+  }
+  .kawaii-body{position:relative;}
+  .kawaii .eye{position:absolute; width:6px; height:8px; border-radius:50%; background:#3a2415;}
+  .kawaii .cheek{position:absolute; width:9px; height:6px; border-radius:50%; background:rgba(255,111,97,.5);}
+  .kawaii .smile{position:absolute; border-bottom:3px solid #3a2415; border-radius:0 0 16px 16px;}
+
+  /* cabai imut */
+  .kawaii.chili{top:16%; left:6%; width:56px; height:80px; animation:floatKawaii 7s ease-in-out infinite;}
+  .kawaii.chili .kawaii-body{
+    width:44px; height:64px; margin:0 auto;
+    background:linear-gradient(160deg, #ff8a75, #ff6f61 65%);
+    border-radius:50% 50% 60% 60% / 60% 60% 40% 40%;
+    transform:rotate(-8deg);
+  }
+  .kawaii.chili .stem{
+    position:absolute; top:-10px; left:22px; width:8px; height:16px;
+    background:#6fcf97; border-radius:4px; transform:rotate(18deg);
+  }
+  .kawaii.chili .eye.l{top:24px; left:11px;} .kawaii.chili .eye.r{top:24px; left:25px;}
+  .kawaii.chili .cheek.l{top:33px; left:6px;} .kawaii.chili .cheek.r{top:33px; left:30px;}
+  .kawaii.chili .smile{top:34px; left:15px; width:14px; height:8px;}
+
+  /* onigiri imut */
+  .kawaii.onigiri{top:12%; right:7%; width:70px; height:66px; animation:floatKawaii 8.5s ease-in-out infinite; animation-delay:1.2s;}
+  .kawaii.onigiri .kawaii-body{
+    width:62px; height:56px; margin:0 auto;
+    background:#fffdf7;
+    border:2px solid #f1e2c8;
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+    border-radius:12px;
+  }
+  .kawaii.onigiri .nori{
+    position:absolute; bottom:0; left:14px; width:34px; height:22px;
+    background:#3a5c46; border-radius:0 0 8px 8px;
+  }
+  .kawaii.onigiri .eye.l{top:26px; left:20px;} .kawaii.onigiri .eye.r{top:26px; left:38px;}
+  .kawaii.onigiri .cheek.l{top:34px; left:15px;} .kawaii.onigiri .cheek.r{top:34px; left:42px;}
+  .kawaii.onigiri .smile{top:35px; left:26px; width:12px; height:7px;}
+
+  /* cangkir teh imut */
+  .kawaii.teacup{bottom:14%; left:8%; width:64px; height:60px; animation:floatKawaii 9s ease-in-out infinite; animation-delay:.5s;}
+  .kawaii.teacup .kawaii-body{
+    width:56px; height:40px; margin-top:14px;
+    background:linear-gradient(160deg, #ffd27a, #ffb84c 70%);
+    border-radius:0 0 22px 22px;
+  }
+  .kawaii.teacup .handle{
+    position:absolute; right:-10px; top:24px; width:16px; height:18px;
+    border:5px solid #ffb84c; border-left:none; border-radius:0 10px 10px 0;
+  }
+  .kawaii.teacup .steam{
+    position:absolute; top:-16px; left:24px; width:6px; height:20px; border-radius:50%;
+    background:linear-gradient(to top, rgba(255,255,255,0), rgba(255,255,255,.9));
+    filter:blur(2px);
+    animation:steamRise 3s ease-in infinite;
+  }
+  .kawaii.teacup .eye.l{top:24px; left:16px;} .kawaii.teacup .eye.r{top:24px; left:34px;}
+  .kawaii.teacup .cheek.l{top:32px; left:11px;} .kawaii.teacup .cheek.r{top:32px; left:38px;}
+  .kawaii.teacup .smile{top:33px; left:22px; width:12px; height:6px;}
+
+  /* sate imut */
+  .kawaii.sate{bottom:10%; right:9%; width:32px; height:120px; animation:floatKawaii 7.5s ease-in-out infinite; animation-delay:2s;}
+  .kawaii.sate .stick{
+    position:absolute; left:14px; top:0; width:4px; height:120px; background:#c99a5b; border-radius:2px;
+  }
+  .kawaii.sate .chunk{
+    position:absolute; left:2px; width:28px; height:26px; border-radius:8px;
+    background:linear-gradient(160deg, #d99a56, #b9723c 70%);
+  }
+  .kawaii.sate .chunk.c1{top:6px;} .kawaii.sate .chunk.c2{top:38px;} .kawaii.sate .chunk.c3{top:70px;}
+  .kawaii.sate .eye.l{top:16px; left:9px;} .kawaii.sate .eye.r{top:16px; left:19px;}
+  .kawaii.sate .smile{top:24px; left:11px; width:10px; height:6px;}
+
+  @keyframes floatKawaii{
+    0%,100%{transform:translateY(0) rotate(-3deg);}
+    50%{transform:translateY(-18px) rotate(3deg);}
+  }
+
+  /* confetti bertaburan */
+  .bg-scene .confetti{
+    position:absolute; border-radius:50%;
+    animation:driftSpice 9s ease-in-out infinite;
+    opacity:.7;
+  }
+
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:700; letter-spacing:-0.01em;}
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+  img{display:block; max-width:100%;}
+  button{font-family:var(--font-body); cursor:pointer; border:none;}
+
+  ::selection{background:var(--gold); color:var(--cream);}
+
+  /* =========================================================
+     NAVBAR
+     ========================================================= */
+  .navbar{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6%;
+    transition:.4s ease;
+    background:transparent;
+  }
+  .navbar.scrolled{
+    padding:12px 6%;
+    background:rgba(255,246,233,0.75);
+    backdrop-filter:blur(18px) saturate(160%);
+    -webkit-backdrop-filter:blur(18px) saturate(160%);
+    box-shadow:0 8px 32px rgba(90,61,43,.12);
+    border-bottom:1px solid rgba(255,184,76,.3);
+  }
+  .logo{
+    font-family:var(--font-display);
+    font-size:1.5rem;
+    font-weight:700;
+    color:var(--gold-light);
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo span{color:var(--red-light); font-style:italic;}
+  .nav-links{display:flex; gap:36px; align-items:center;}
+  .nav-links a{
+    font-size:.92rem; font-weight:600; color:var(--muted);
+    position:relative; padding-bottom:4px;
+    transition:.3s;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:0;
+    background:var(--gold); transition:.3s;
+  }
+  .nav-links a:hover{color:var(--cream);}
+  .nav-links a:hover::after{width:100%;}
+
+  .cart-btn{
+    position:relative;
+    background:var(--red);
+    width:46px; height:46px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 18px rgba(169,50,38,.4);
+    transition:.3s;
+  }
+  .cart-btn:hover{transform:scale(1.08) rotate(-6deg); box-shadow:0 8px 22px rgba(169,50,38,.6);}
+  .cart-btn svg{width:20px; height:20px; stroke:#ffffff;}
+  .cart-badge{
+    position:absolute; top:-6px; right:-6px;
+    background:var(--gold); color:var(--cream);
+    font-size:.68rem; font-weight:800;
+    width:20px; height:20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono);
+    transform:scale(0);
+    transition:.25s cubic-bezier(.5,1.8,.5,1);
+  }
+  .cart-badge.show{transform:scale(1);}
+
+  /* =========================================================
+     HERO — dengan piring 3D berputar & asap
+     ========================================================= */
+  .hero{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:140px 6% 80px;
+    position:relative; z-index:1;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .hero-text{flex:1 1 420px; position:relative; z-index:2;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    color:var(--gold);
+    font-size:.8rem;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    display:inline-block;
+    margin-bottom:18px;
+    opacity:0;
+    animation:fadeUp .8s ease forwards .1s;
+  }
+  .hero-text h1{
+    font-size:clamp(2.6rem, 6vw, 4.4rem);
+    line-height:1.05;
+    color:var(--cream);
+    opacity:0;
+    animation:fadeUp .9s ease forwards .25s;
+  }
+  .hero-text h1 .accent{
+    color:var(--gold-light);
+    font-style:italic;
+    font-weight:500;
+    background:linear-gradient(90deg, var(--gold-light), var(--red-light), var(--gold-light));
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:shimmer 4s linear infinite;
+  }
+  .hero-text p{
+    margin-top:22px; max-width:460px;
+    color:var(--muted); font-size:1.05rem; line-height:1.7;
+    opacity:0;
+    animation:fadeUp .9s ease forwards .4s;
+  }
+  .hero-cta{
+    margin-top:34px; display:flex; gap:16px; flex-wrap:wrap;
+    opacity:0;
+    animation:fadeUp .9s ease forwards .55s;
+  }
+  .btn-primary, .btn-ghost{
+    padding:15px 30px; border-radius:100px;
+    font-weight:700; font-size:.95rem;
+    transition:.3s;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .btn-primary{
+    background:var(--red);
+    color:#ffffff;
+    box-shadow:0 10px 30px rgba(255,111,97,.4);
+  }
+  .btn-primary:hover{transform:translateY(-3px) rotate(-1deg); box-shadow:0 14px 34px rgba(255,111,97,.55);}
+  .btn-ghost{
+    border:1.5px solid var(--gold);
+    color:#c9791a;
+  }
+  .btn-ghost:hover{background:var(--gold); color:var(--cream); transform:translateY(-3px) rotate(1deg);}
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(24px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes shimmer{
+    to{background-position:200% center;}
+  }
+
+  /* --- piring 3D --- */
+  .hero-3d{
+    flex:1 1 360px;
+    display:flex; align-items:center; justify-content:center;
+    min-height:420px;
+    perspective:1200px;
+    position:relative;
+  }
+  .plate-scene{
+    position:relative;
+    width:320px; height:320px;
+    transform-style:preserve-3d;
+    animation:floatPlate 6s ease-in-out infinite;
+  }
+  .plate{
+    position:absolute; inset:0;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 35% 30%, #3a2a1e, #241a14 70%);
+    border:10px solid var(--gold);
+    box-shadow:
+      0 30px 60px rgba(0,0,0,.55),
+      inset 0 0 40px rgba(201,154,46,.25);
+    transform:rotateX(58deg);
+    animation:spinPlate 14s linear infinite;
+  }
+  .plate::before{
+    content:"";
+    position:absolute; inset:26px;
+    border-radius:50%;
+    border:2px dashed rgba(201,154,46,.35);
+  }
+  .food-emoji{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:5.5rem;
+    transform:rotateX(58deg) translateZ(30px);
+    filter:drop-shadow(0 20px 20px rgba(0,0,0,.5));
+    animation:spinPlate 14s linear infinite;
+  }
+  @keyframes spinPlate{
+    from{transform:rotateX(58deg) rotateZ(0deg);}
+    to{transform:rotateX(58deg) rotateZ(360deg);}
+  }
+  @keyframes floatPlate{
+    0%,100%{transform:translateY(0) rotateY(0deg);}
+    50%{transform:translateY(-18px) rotateY(8deg);}
+  }
+  .steam{
+    position:absolute;
+    bottom:55%;
+    width:16px; height:70px;
+    border-radius:50%;
+    background:linear-gradient(to top, rgba(243,229,208,0), rgba(243,229,208,.5));
+    filter:blur(6px);
+    animation:steamRise 3.2s ease-in infinite;
+  }
+  .steam.s1{left:38%; animation-delay:0s;}
+  .steam.s2{left:50%; animation-delay:1s;}
+  .steam.s3{left:60%; animation-delay:2s;}
+  @keyframes steamRise{
+    0%{transform:translateY(0) scaleX(1); opacity:0;}
+    20%{opacity:.8;}
+    100%{transform:translateY(-90px) scaleX(1.6); opacity:0;}
+  }
+
+  /* rempah mengambang di background hero */
+  .spice-float{
+    position:absolute; font-size:1.8rem; opacity:.5; z-index:0;
+    animation:driftSpice 10s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes driftSpice{
+    0%,100%{transform:translate(0,0) rotate(0deg);}
+    50%{transform:translate(14px,-24px) rotate(20deg);}
+  }
+
+  /* =========================================================
+     SECTION UMUM
+     ========================================================= */
+  section{position:relative; z-index:1; padding:100px 6%;}
+  .section-head{text-align:center; max-width:600px; margin:0 auto 60px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{
+    font-size:clamp(2rem, 4vw, 2.8rem);
+    color:var(--cream);
+  }
+  .section-head p{color:var(--muted); margin-top:14px; line-height:1.7;}
+
+  .reveal{
+    opacity:0; transform:translateY(40px) scale(.96);
+    transition:opacity .7s ease, transform .7s cubic-bezier(.34,1.56,.64,1);
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0) scale(1);}
+
+  /* =========================================================
+     TAB KATEGORI MENU
+     ========================================================= */
+  .menu-tabs{
+    display:flex; justify-content:center; gap:14px; margin-bottom:50px; flex-wrap:wrap;
+  }
+  .menu-tab{
+    padding:12px 26px; border-radius:100px;
+    background:rgba(255,255,255,.7);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--muted);
+    font-weight:700; font-size:.9rem;
+    border:2px solid rgba(255,184,76,.35);
+    transition:.3s;
+  }
+  .menu-tab.active, .menu-tab:hover{
+    background:var(--gold); color:var(--cream); border-color:var(--gold);
+    transform:translateY(-2px);
+  }
+
+  .menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(270px, 1fr));
+    gap:34px;
+    perspective:1000px;
+  }
+  .menu-card{
+    display:none;
+    background:#ffffff;
+    border-radius:28px;
+    overflow:hidden;
+    border:3px solid rgba(255,184,76,.5);
+    box-shadow:7px 7px 0 rgba(90,61,43,.1);
+    transform-style:preserve-3d;
+    transition:transform .15s ease, box-shadow .3s ease, border-color .3s ease;
+    will-change:transform;
+  }
+  .menu-card.visible{display:block;}
+  .menu-card:hover{
+    border-color:var(--red);
+    box-shadow:10px 10px 0 rgba(255,111,97,.25);
+  }
+  .menu-img-wrap{
+    width:100%; height:200px; overflow:hidden; position:relative;
+    transform:translateZ(20px);
+  }
+  .menu-img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .menu-card:hover .menu-img{transform:scale(1.12) rotate(-1deg);}
+  .menu-img-wrap::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(255,184,76,.18), transparent 55%);
+  }
+  .menu-info{padding:22px 22px 26px; transform:translateZ(35px);}
+  .menu-name{font-size:1.25rem; color:var(--cream); margin-bottom:8px;}
+  .menu-desc{font-size:.88rem; color:var(--muted); line-height:1.6; min-height:44px;}
+  .menu-footer{
+    margin-top:18px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .menu-price{
+    font-family:var(--font-mono); font-weight:600;
+    color:var(--gold-light); font-size:1.05rem;
+  }
+  .btn-add-cart{
+    background:transparent; border:1.5px solid var(--red-light);
+    color:var(--red-light); padding:9px 18px; border-radius:100px;
+    font-weight:700; font-size:.82rem;
+    transition:.3s; position:relative; overflow:hidden;
+  }
+  .btn-add-cart:hover{background:var(--red-light); color:#ffffff;}
+  .btn-add-cart.pop{animation:popAdd .35s ease;}
+  @keyframes popAdd{
+    0%{transform:scale(1);}
+    50%{transform:scale(.88);}
+    100%{transform:scale(1);}
+  }
+
+  /* =========================================================
+     FOOTER / KONTAK
+     ========================================================= */
+  .footer{
+    background:var(--bg-alt);
+    padding:70px 6% 30px;
+    border-top:1px solid rgba(201,154,46,.15);
+    position:relative; z-index:1;
+  }
+  .footer-grid{
+    display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px;
+    max-width:1100px; margin:0 auto;
+  }
+  .footer-grid h4{color:var(--gold-light); margin-bottom:16px; font-size:1.1rem;}
+  .footer-grid p, .footer-grid a{color:var(--muted); font-size:.9rem; line-height:2;}
+  .footer-grid a:hover{color:var(--cream);}
+  .footer-bottom{
+    text-align:center; margin-top:50px; padding-top:24px;
+    border-top:1px solid rgba(90,61,43,.1);
+    color:var(--muted); font-size:.8rem;
+  }
+
+  /* =========================================================
+     TOMBOL KERANJANG MENGAMBANG (mobile)
+     ========================================================= */
+  .fab-cart{
+    position:fixed; bottom:26px; right:26px; z-index:150;
+    background:var(--red); color:#ffffff;
+    padding:16px 26px; border-radius:100px;
+    display:flex; align-items:center; gap:10px;
+    font-weight:700; box-shadow:0 14px 34px rgba(255,111,97,.5);
+    transition:.3s;
+  }
+  .fab-cart:hover{transform:translateY(-4px) scale(1.03) rotate(-2deg);}
+
+  /* =========================================================
+     SIDEBAR KERANJANG
+     ========================================================= */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.6);
+    backdrop-filter:blur(3px);
+    z-index:300; opacity:0; visibility:hidden; transition:.35s;
+  }
+  .overlay.open{opacity:1; visibility:visible;}
+
+  .cart-sidebar{
+    position:fixed; top:0; right:0; height:100%;
+    width:min(440px, 92vw);
+    background:rgba(255,250,240,.92);
+    backdrop-filter:blur(22px) saturate(150%);
+    -webkit-backdrop-filter:blur(22px) saturate(150%);
+    border-left:3px solid rgba(255,184,76,.4);
+    z-index:301;
+    transform:translateX(100%);
+    transition:transform .45s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column;
+    box-shadow:-20px 0 60px rgba(90,61,43,.25);
+  }
+  .cart-sidebar.open{transform:translateX(0);}
+  .cart-header{
+    padding:26px 26px 18px; display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid rgba(201,154,46,.15);
+  }
+  .cart-header h3{color:var(--gold-light); font-size:1.4rem;}
+  .close-btn{
+    width:36px; height:36px; border-radius:50%; background:var(--bg-card);
+    display:flex; align-items:center; justify-content:center; color:var(--cream);
+    transition:.3s;
+  }
+  .close-btn:hover{background:var(--red); color:#ffffff; transform:rotate(90deg);}
+
+  .cart-scroll{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;}
+  .cart-body{padding:20px 26px 0;}
+  .cart-empty{
+    text-align:center; color:var(--muted); margin-top:60px; font-size:.95rem;
+  }
+  .cart-item{
+    display:flex; gap:14px; padding:16px 0;
+    border-bottom:1px solid rgba(90,61,43,.1);
+    animation:fadeUp .35s ease;
+  }
+  .cart-item-info{flex:1;}
+  .cart-item-info h5{color:var(--cream); font-size:1rem; margin-bottom:4px;}
+  .cart-item-info span{font-family:var(--font-mono); color:var(--gold-light); font-size:.85rem;}
+  .qty-control{
+    display:flex; align-items:center; gap:10px; margin-top:8px;
+  }
+  .qty-control button{
+    width:26px; height:26px; border-radius:8px; background:var(--bg-alt);
+    color:var(--cream); font-weight:700; transition:.2s;
+    border:1.5px solid rgba(255,184,76,.3);
+  }
+  .qty-control button:hover{background:var(--gold); color:var(--cream);}
+  .qty-control span{font-family:var(--font-mono); min-width:18px; text-align:center;}
+  .remove-item{color:var(--red-light); font-size:.78rem; margin-top:6px; text-decoration:underline; cursor:pointer;}
+
+  .cart-footer{
+    padding:22px 26px 28px; border-top:1px solid rgba(201,154,46,.15);
+  }
+  .cart-total-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:18px; font-size:1.1rem;
+  }
+  .cart-total-row strong{color:var(--gold-light); font-family:var(--font-mono);}
+
+  .form-group{margin-bottom:14px;}
+  .form-group label{
+    display:block; font-size:.78rem; color:var(--muted);
+    margin-bottom:6px; font-weight:600; letter-spacing:.02em;
+  }
+  .form-group input, .form-group textarea{
+    width:100%; padding:12px 14px; border-radius:14px;
+    background:var(--bg-alt); border:2px solid rgba(255,184,76,.3);
+    color:var(--cream); font-family:var(--font-body); font-size:.9rem;
+    transition:.3s;
+  }
+  .form-group input:focus, .form-group textarea:focus{
+    outline:none; border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(255,184,76,.2);
+  }
+  .form-group textarea{resize:vertical; min-height:60px;}
+
+  .btn-checkout{
+    width:100%; margin-top:8px;
+    background:linear-gradient(90deg, var(--red), var(--red-light));
+    color:#ffffff; padding:16px; border-radius:16px;
+    font-weight:800; font-size:1rem;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    box-shadow:0 14px 30px rgba(255,111,97,.4);
+    transition:.3s;
+  }
+  .btn-checkout:hover{transform:translateY(-2px) scale(1.01); box-shadow:0 18px 34px rgba(255,111,97,.55);}
+  .btn-checkout:active{transform:translateY(0) scale(1);}
+
+  /* =========================================================
+     METODE PEMBAYARAN
+     ========================================================= */
+  .payment-label{
+    display:block; font-size:.78rem; color:var(--muted);
+    margin-bottom:10px; font-weight:700; letter-spacing:.02em;
+  }
+  .payment-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    margin-bottom:16px;
+  }
+  .payment-option{
+    display:flex; align-items:center; gap:8px;
+    padding:12px 12px; border-radius:14px;
+    background:var(--bg-alt);
+    border:2px solid rgba(255,184,76,.3);
+    cursor:pointer; transition:.25s;
+    font-weight:700; font-size:.82rem; color:var(--cream);
+  }
+  .payment-option:hover{transform:translateY(-2px); border-color:var(--gold);}
+  .payment-option.active{
+    background:var(--gold); border-color:var(--gold); color:var(--cream);
+    box-shadow:4px 4px 0 rgba(90,61,43,.15);
+  }
+  .payment-option .p-icon{font-size:1.2rem;}
+
+  .payment-detail{
+    display:none;
+    background:#ffffff;
+    border:2px dashed rgba(255,184,76,.5);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:16px;
+    font-size:.85rem;
+    line-height:1.7;
+    color:var(--cream);
+    animation:fadeUp .3s ease;
+  }
+  .payment-detail.show{display:block;}
+  .payment-detail strong{color:#c9791a;}
+  .payment-detail .copy-btn{
+    display:inline-block; margin-top:6px;
+    background:var(--gold-light); color:var(--cream);
+    padding:5px 12px; border-radius:100px;
+    font-size:.75rem; font-weight:700; cursor:pointer;
+    transition:.2s;
+  }
+  .payment-detail .copy-btn:hover{background:var(--gold);}
+  .payment-detail.cod-note{
+    border-style:solid; border-color:rgba(111,207,151,.5);
+    background:rgba(111,207,151,.12);
+  }
+
+  /* =========================================================
+     TOAST
+     ========================================================= */
+  .toast{
+    position:fixed; top:30px; left:50%; transform:translate(-50%,-120%);
+    background:var(--gold); color:var(--cream);
+    padding:14px 26px; border-radius:100px; font-weight:700; font-size:.9rem;
+    z-index:400; box-shadow:0 14px 30px rgba(90,61,43,.3);
+    transition:transform .4s cubic-bezier(.4,0,.2,1);
+    display:flex; align-items:center; gap:8px;
+  }
+  .toast.show{transform:translate(-50%,0);}
+
+  @media (max-width:640px){
+    .footer-grid{grid-template-columns:1fr; text-align:center;}
+    .hero{padding-top:120px;}
+  }
+</style>
 </head>
 <body>
 
-<div class="grain-overlay"></div>
+<!-- ================= BACKGROUND CUTE CARTOON ================= -->
+<div class="bg-scene" aria-hidden="true">
+  <div class="hill h1"></div>
+  <div class="hill h2"></div>
 
-<header>
-  <div class="brand">🪐 Food<span>verse</span></div>
-  <nav class="nav-links" id="navLinks">
-    <a href="#home">Beranda</a>
-    <a href="#menu">Menu</a>
-    <a href="#about">Tentang</a>
-  </nav>
-  <button class="burger" id="burger"><i class="fa-solid fa-bars"></i></button>
-</header>
+  <div class="sun">
+    <div class="eye l"></div><div class="eye r"></div>
+    <div class="cheek l"></div><div class="cheek r"></div>
+    <div class="smile"></div>
+  </div>
 
-<!-- ===== HERO — signature: orbit makanan ===== -->
-<section class="hero" id="home">
-  <span class="eyebrow"><i class="fa-solid fa-satellite"></i> SELAMAT DATANG DI ALAM SEMESTA RASA</span>
-  <h1>Jelajahi <span class="accent">Foodverse</span><br>Kuliner Digitalmu</h1>
-  <p class="sub">Satu tempat untuk menemukan menu favorit — dari makanan berat, minuman segar, dessert manis, sampai snack renyah. Filter, cari, dan simpan favoritmu.</p>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
 
-  <!-- orbit: representasi visual "universe" kuliner -->
-  <div class="orbit-stage" aria-hidden="true">
-    <div class="orbit-core">🪐</div>
-    <div class="orbit-ring ring-1">
-      <div class="orbit-item" style="top:0;left:50%;">🍔</div>
-      <div class="orbit-item" style="top:100%;left:50%;">🍩</div>
-    </div>
-    <div class="orbit-ring ring-2">
-      <div class="orbit-item" style="top:50%;left:0;">🍜</div>
-      <div class="orbit-item" style="top:50%;left:100%;">🥤</div>
-      <div class="orbit-item" style="top:0;left:50%;">🍣</div>
-    </div>
-    <div class="orbit-ring ring-3">
-      <div class="orbit-item" style="top:0;left:50%;">🍕</div>
-      <div class="orbit-item" style="top:100%;left:50%;">🍦</div>
-      <div class="orbit-item" style="top:50%;left:0;">🍟</div>
+  <span class="confetti" style="width:10px;height:10px;top:22%;left:30%;background:#ff8f82;"></span>
+  <span class="confetti" style="width:8px;height:8px;top:60%;left:70%;background:#6fcf97; animation-delay:2s;"></span>
+  <span class="confetti" style="width:12px;height:12px;top:45%;left:20%;background:#ffd27a; animation-delay:4s;"></span>
+  <span class="confetti" style="width:9px;height:9px;top:16%;left:55%;background:#ff6f61; animation-delay:1s;"></span>
+
+  <!-- karakter makanan lucu -->
+  <div class="kawaii chili">
+    <div class="stem"></div>
+    <div class="kawaii-body">
+      <div class="eye l"></div><div class="eye r"></div>
+      <div class="cheek l"></div><div class="cheek r"></div>
+      <div class="smile"></div>
     </div>
   </div>
 
-  <div class="hero-cta">
-    <a href="#menu" class="btn btn-primary">JELAJAHI MENU <i class="fa-solid fa-arrow-down"></i></a>
-    <a href="#about" class="btn btn-ghost">TENTANG FOODVERSE</a>
+  <div class="kawaii onigiri">
+    <div class="kawaii-body">
+      <div class="nori"></div>
+      <div class="eye l"></div><div class="eye r"></div>
+      <div class="cheek l"></div><div class="cheek r"></div>
+      <div class="smile"></div>
+    </div>
+  </div>
+
+  <div class="kawaii teacup">
+    <div class="steam"></div>
+    <div class="kawaii-body">
+      <div class="handle"></div>
+      <div class="eye l"></div><div class="eye r"></div>
+      <div class="cheek l"></div><div class="cheek r"></div>
+      <div class="smile"></div>
+    </div>
+  </div>
+
+  <div class="kawaii sate">
+    <div class="stick"></div>
+    <div class="chunk c1"></div>
+    <div class="chunk c2"></div>
+    <div class="chunk c3"></div>
+    <div class="eye l"></div><div class="eye r"></div>
+    <div class="smile"></div>
+  </div>
+</div>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar" id="navbar">
+  <div class="logo">Rempah<span>Nusantara</span></div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#tentang">Tentang</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+  </ul>
+  <button class="cart-btn" onclick="toggleCart(true)" aria-label="Buka keranjang">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <span class="spice-float" style="top:12%; left:8%;">🌶️</span>
+  <span class="spice-float" style="top:70%; left:14%; animation-delay:2s;">🧄</span>
+  <span class="spice-float" style="top:20%; left:88%; animation-delay:4s;">🌿</span>
+
+  <div class="hero-text">
+    <span class="eyebrow">Restoran Autentik Indonesia</span>
+    <h1>Rasa Rempah,<br><span class="accent">Cerita Nusantara.</span></h1>
+    <p>Setiap hidangan dimasak dari resep turun-temurun dengan rempah pilihan. Pesan sekarang, nikmati kehangatan cita rasa Indonesia langsung di rumahmu.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn-primary">Lihat Menu 🍽️</a>
+      <a href="#kontak" class="btn-ghost">Hubungi Kami</a>
+    </div>
+  </div>
+
+  <div class="hero-3d">
+    <div class="steam s1"></div>
+    <div class="steam s2"></div>
+    <div class="steam s3"></div>
+    <div class="plate-scene">
+      <div class="plate"></div>
+      <div class="food-emoji">🍛</div>
+    </div>
   </div>
 </section>
 
-<!-- ===== MENU ===== -->
+<!-- ================= MENU ================= -->
 <section id="menu">
   <div class="section-head reveal">
-    <span class="tag">// MENU KAMI</span>
-    <h2>Temukan Rasa yang Kamu Cari</h2>
-    <p>Gunakan pencarian atau filter kategori untuk menjelajahi menu Foodverse.</p>
+    <span class="eyebrow">Menu Pilihan</span>
+    <h2>Jelajahi Cita Rasa Kami</h2>
+    <p>Dari nasi goreng klasik hingga rendang autentik — semua dimasak segar setiap hari.</p>
   </div>
 
-  <div class="menu-controls reveal">
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="searchInput" placeholder="Cari menu, misal: nasi goreng...">
-    </div>
-
-    <div class="pill-row">
-      <div class="pill-indicator" id="pillIndicator"></div>
-      <button class="pill active" data-category="semua">Semua</button>
-      <button class="pill" data-category="berat">Makanan Berat</button>
-      <button class="pill" data-category="minuman">Minuman</button>
-      <button class="pill" data-category="dessert">Dessert</button>
-      <button class="pill" data-category="snack">Snack</button>
-    </div>
+  <div class="menu-tabs reveal">
+    <button class="menu-tab active" data-filter="semua" onclick="filterMenu('semua', this)">Semua</button>
+    <button class="menu-tab" data-filter="utama" onclick="filterMenu('utama', this)">Makanan Utama</button>
+    <button class="menu-tab" data-filter="cemilan" onclick="filterMenu('cemilan', this)">Cemilan</button>
+    <button class="menu-tab" data-filter="minuman" onclick="filterMenu('minuman', this)">Minuman</button>
   </div>
 
   <div class="menu-grid" id="menuGrid">
-    <!-- kartu menu dirender otomatis lewat js/main.js dari data/menu.js -->
-  </div>
-  <div class="empty-state" id="emptyState">
-    <i class="fa-solid fa-satellite-dish"></i>
-    <p>Menu tidak ditemukan di galaksi ini. Coba kata kunci atau kategori lain.</p>
+
+    <!-- =========================================================================== -->
+    <!-- 🍛 ITEM MENU 1 — NASI GORENG. Untuk mengganti: ubah src gambar, teks nama,   -->
+    <!-- deskripsi, dan harga (JANGAN LUPA ubah juga atribut data-price di bawah).   -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="utama" data-name="Nasi Goreng Spesial" data-price="25000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR NASI GORENG DI SINI (ganti URL src) -->
+        <img class="menu-img" src="https://i.pinimg.com/1200x/ae/ff/97/aeff973dfe011768664716adfccd2ef0.jpg" alt="Nasi Goreng Spesial">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Nasi Goreng Spesial</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Nasi goreng bumbu rempah dengan telur, ayam suwir, dan kerupuk.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI (ingat ubah juga data-price di atas) -->
+          <span class="menu-price">Rp 25.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🍢 ITEM MENU 2 — SATE AYAM                                                   -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="utama" data-name="Sate Ayam Madura" data-price="28000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR SATE AYAM DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/1200x/5b/f2/7e/5bf27e721ed7bc858e0a7f0d905632e8.jpg" alt="Sate Ayam Madura">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Sate Ayam Madura</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Sate ayam bakar dengan bumbu kacang khas Madura, disajikan dengan lontong.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 28.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🥘 ITEM MENU 3 — RENDANG DAGING                                              -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="utama" data-name="Rendang Daging" data-price="35000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR RENDANG DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/1200x/cc/a3/21/cca3212b7496ae6ffe854cb249ea5273.jpg" alt="Rendang Daging">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Rendang Daging</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Daging sapi dimasak lama dengan santan dan rempah khas Padang.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 35.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🍲 ITEM MENU 4 — SOTO AYAM                                                   -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="utama" data-name="Soto Ayam Lamongan" data-price="22000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR SOTO AYAM DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/1200x/4e/f4/ec/4ef4ec32cfa71c4cfbae335e84ce2b80.jpg" alt="Soto Ayam Lamongan">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Soto Ayam Lamongan</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Kuah bening gurih dengan suwiran ayam, koya, dan telur rebus.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 22.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🍜 ITEM MENU 5 — BAKSO                                                       -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="cemilan" data-name="Bakso Urat" data-price="20000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR BAKSO DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/1200x/24/b3/e5/24b3e50e3ad73c0091d8c0010192b5fa.jpg" alt="Bakso Urat">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Bakso Urat</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Bakso kenyal isi urat dengan kuah kaldu sapi hangat.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 20.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🥗 ITEM MENU 6 — GADO-GADO                                                   -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="cemilan" data-name="Gado-Gado" data-price="18000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR GADO-GADO DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/736x/28/d2/6c/28d26c191b31b3f77708cfa5286bdb48.jpg" alt="Gado-Gado">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Gado-Gado</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Sayuran segar dengan siraman bumbu kacang khas Betawi.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 18.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🍿 ITEM MENU 7 — KERUPUK UDANG                                               -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="cemilan" data-name="Kerupuk Udang" data-price="8000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR KERUPUK DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/1200x/ab/4a/32/ab4a321cae58d20d74f20aa784a80bb8.jpg" alt="Kerupuk Udang">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Kerupuk Udang</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Kerupuk udang renyah, cocok jadi teman santap nasi.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 8.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🧊 ITEM MENU 8 — ES TEH MANIS                                                -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="minuman" data-name="Es Teh Manis" data-price="5000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR ES TEH DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/736x/d6/b8/e1/d6b8e11d8461e4f55cda9fdca499402a.jpg" alt="Es Teh Manis">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Es Teh Manis</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Teh manis dingin segar, teman setia makan siang.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 5.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================== -->
+    <!-- 🍧 ITEM MENU 9 — ES CAMPUR                                                   -->
+    <!-- =========================================================================== -->
+    <div class="menu-card reveal visible" data-category="minuman" data-name="Es Campur" data-price="15000">
+      <div class="menu-img-wrap">
+        <!-- 🖼️ GANTI GAMBAR ES CAMPUR DI SINI -->
+        <img class="menu-img" src="https://i.pinimg.com/736x/f1/19/58/f11958c09257619f0a791484d84c7df0.jpg" alt="Es Campur">
+      </div>
+      <div class="menu-info">
+        <!-- ✏️ GANTI NAMA MAKANAN DI SINI -->
+        <h3 class="menu-name">Es Campur</h3>
+        <!-- ✏️ GANTI DESKRIPSI DI SINI -->
+        <p class="menu-desc">Campuran buah, cincau, dan sirup merah dengan es serut segar.</p>
+        <div class="menu-footer">
+          <!-- ✏️ GANTI HARGA DI SINI -->
+          <span class="menu-price">Rp 15.000</span>
+          <button class="btn-add-cart" onclick="addToCart(this)">+ Keranjang</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- ===== ABOUT ===== -->
-<section id="about">
+<!-- ================= TENTANG ================= -->
+<section id="tentang">
   <div class="section-head reveal">
-    <span class="tag">// TENTANG</span>
-    <h2>Kenapa Foodverse?</h2>
-  </div>
-  <div class="about-strip reveal">
-    <div class="about-card">
-      <div class="icon">⚡</div>
-      <h3>Cepat & Interaktif</h3>
-      <p>Filter dan cari menu secara instan tanpa reload halaman.</p>
-    </div>
-    <div class="about-card">
-      <div class="icon">🛰️</div>
-      <h3>Kategori Jelas</h3>
-      <p>Menu terorganisir rapi dari makanan berat sampai snack ringan.</p>
-    </div>
-    <div class="about-card">
-      <div class="icon">❤️</div>
-      <h3>Simpan Favorit</h3>
-      <p>Tandai menu favoritmu dan temukan lagi dengan mudah.</p>
-    </div>
+    <span class="eyebrow">Tentang Kami</span>
+    <h2>Dari Dapur Keluarga, Untuk Meja Kamu</h2>
+    <p>Rempah Nusantara berdiri sejak 2010, menghadirkan resep otentik yang diwariskan lintas generasi. Kami percaya makanan terbaik lahir dari rempah segar dan kesabaran memasak.</p>
   </div>
 </section>
 
-<footer>
-  <div class="brand">🪐 Food<span style="color:var(--gold)">verse</span></div>
-  <p>© 2026 Foodverse — Jelajah Kuliner Digital.</p>
+<!-- ================= FOOTER / KONTAK ================= -->
+<footer class="footer" id="kontak">
+  <div class="footer-grid">
+    <div>
+      <h4>Rempah Nusantara</h4>
+      <p>Jl. Merdeka No. 45, Jakarta Selatan<br>Buka setiap hari, 10.00 – 21.00 WIB</p>
+    </div>
+    <div>
+      <h4>Tautan</h4>
+      <p><a href="#menu">Menu</a></p>
+      <p><a href="#tentang">Tentang</a></p>
+      <p><a href="#kontak">Kontak</a></p>
+    </div>
+    <div>
+      <h4>Hubungi</h4>
+      <p><a href="tel:+6281234567890">+62 812-3456-7890</a></p>
+      <p><a href="mailto:halo@rempahnusantara.id">halo@rempahnusantara.id</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rempah Nusantara. Semua rasa, semua cerita.</div>
 </footer>
 
-<script src="menu.js"></script>
-<script src="main.js"></script>
+<!-- ================= TOMBOL KERANJANG MENGAMBANG ================= -->
+<button class="fab-cart" onclick="toggleCart(true)">
+  🛒 Keranjang (<span id="fabCount">0</span>)
+</button>
+
+<!-- ================= OVERLAY & SIDEBAR KERANJANG ================= -->
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>Keranjang Kamu</h3>
+    <div class="close-btn" onclick="toggleCart(false)">✕</div>
+  </div>
+
+  <div class="cart-scroll">
+    <div class="cart-body" id="cartBody">
+      <p class="cart-empty" id="cartEmptyMsg">Keranjang masih kosong. Yuk pilih menu favoritmu! 🍽️</p>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total</span>
+        <strong id="cartTotal">Rp 0</strong>
+      </div>
+
+    <!-- ===== FORM ALAMAT PENGIRIMAN ===== -->
+    <div class="form-group">
+      <label for="inputNama">Nama Penerima</label>
+      <input type="text" id="inputNama" placeholder="Nama lengkap kamu">
+    </div>
+    <div class="form-group">
+      <label for="inputHp">Nomor HP</label>
+      <input type="tel" id="inputHp" placeholder="08xxxxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label for="inputAlamat">Alamat Pengiriman</label>
+      <textarea id="inputAlamat" placeholder="Nama jalan, no rumah, RT/RW, kelurahan, kecamatan, kota"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="inputCatatan">Catatan (opsional)</label>
+      <input type="text" id="inputCatatan" placeholder="Contoh: tidak pakai pedas">
+    </div>
+
+    <!-- ===== METODE PEMBAYARAN ===== -->
+    <label class="payment-label">Metode Pembayaran</label>
+    <div class="payment-grid">
+      <div class="payment-option" data-method="DANA" onclick="selectPayment('DANA', this)">
+        <span class="p-icon">💙</span> DANA
+      </div>
+      <div class="payment-option" data-method="OVO" onclick="selectPayment('OVO', this)">
+        <span class="p-icon">💜</span> OVO
+      </div>
+      <div class="payment-option" data-method="GoPay" onclick="selectPayment('GoPay', this)">
+        <span class="p-icon">💚</span> GoPay
+      </div>
+      <div class="payment-option" data-method="ShopeePay" onclick="selectPayment('ShopeePay', this)">
+        <span class="p-icon">🧡</span> ShopeePay
+      </div>
+      <div class="payment-option" data-method="LinkAja" onclick="selectPayment('LinkAja', this)">
+        <span class="p-icon">❤️</span> LinkAja
+      </div>
+      <div class="payment-option" data-method="SeaBank" onclick="selectPayment('SeaBank', this)">
+        <span class="p-icon">🌊</span> SeaBank
+      </div>
+      <div class="payment-option" data-method="QRIS" onclick="selectPayment('QRIS', this)">
+        <span class="p-icon">🔳</span> QRIS
+      </div>
+      <div class="payment-option" data-method="Bank BCA" onclick="selectPayment('Bank BCA', this)">
+        <span class="p-icon">🏦</span> Bank BCA
+      </div>
+      <div class="payment-option" data-method="Bank Mandiri" onclick="selectPayment('Bank Mandiri', this)">
+        <span class="p-icon">🏦</span> Bank Mandiri
+      </div>
+      <div class="payment-option" data-method="Bank BRI" onclick="selectPayment('Bank BRI', this)">
+        <span class="p-icon">🏦</span> Bank BRI
+      </div>
+      <div class="payment-option" data-method="Bank BNI" onclick="selectPayment('Bank BNI', this)">
+        <span class="p-icon">🏦</span> Bank BNI
+      </div>
+      <div class="payment-option" data-method="COD" onclick="selectPayment('COD', this)" style="grid-column:1 / -1;">
+        <span class="p-icon">💵</span> COD (Bayar di Tempat)
+      </div>
+    </div>
+
+    <!-- 💳 GANTI NOMOR/DETAIL AKUN PEMBAYARAN DI BAWAH SESUAI PUNYA RESTORAN KAMU -->
+    <div class="payment-detail" id="detailDANA">
+      Transfer ke <strong>DANA a.n. Rempah Nusantara</strong><br>
+      Nomor: <strong>0812-3456-7890</strong>
+      <span class="copy-btn" onclick="copyNumber('081234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailOVO">
+      Transfer ke <strong>OVO a.n. Rempah Nusantara</strong><br>
+      Nomor: <strong>0812-3456-7890</strong>
+      <span class="copy-btn" onclick="copyNumber('081234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailGoPay">
+      Transfer ke <strong>GoPay a.n. Rempah Nusantara</strong><br>
+      Nomor: <strong>0812-3456-7890</strong>
+      <span class="copy-btn" onclick="copyNumber('081234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailShopeePay">
+      Transfer ke <strong>ShopeePay a.n. Rempah Nusantara</strong><br>
+      Nomor: <strong>0812-3456-7890</strong>
+      <span class="copy-btn" onclick="copyNumber('081234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailLinkAja">
+      Transfer ke <strong>LinkAja a.n. Rempah Nusantara</strong><br>
+      Nomor: <strong>0812-3456-7890</strong>
+      <span class="copy-btn" onclick="copyNumber('081234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailSeaBank">
+      Transfer ke <strong>SeaBank a.n. Rempah Nusantara</strong><br>
+      No. Rekening: <strong>901234567890</strong>
+      <span class="copy-btn" onclick="copyNumber('901234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailQRIS">
+      Scan kode QRIS yang akan admin kirimkan lewat chat WhatsApp setelah kamu tekan "Pesan Sekarang". Berlaku untuk semua e-wallet & m-banking.
+    </div>
+    <div class="payment-detail" id="detailBankBCA">
+      Transfer ke <strong>BCA a.n. Rempah Nusantara</strong><br>
+      No. Rekening: <strong>1234567890</strong>
+      <span class="copy-btn" onclick="copyNumber('1234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailBankMandiri">
+      Transfer ke <strong>Mandiri a.n. Rempah Nusantara</strong><br>
+      No. Rekening: <strong>1234567890123</strong>
+      <span class="copy-btn" onclick="copyNumber('1234567890123')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailBankBRI">
+      Transfer ke <strong>BRI a.n. Rempah Nusantara</strong><br>
+      No. Rekening: <strong>123401000123456</strong>
+      <span class="copy-btn" onclick="copyNumber('123401000123456')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail" id="detailBankBNI">
+      Transfer ke <strong>BNI a.n. Rempah Nusantara</strong><br>
+      No. Rekening: <strong>1234567890</strong>
+      <span class="copy-btn" onclick="copyNumber('1234567890')">Salin Nomor</span>
+    </div>
+    <div class="payment-detail cod-note" id="detailCOD">
+      🚴 Bayar tunai langsung ke kurir saat pesanan tiba di alamatmu. Siapkan uang pas ya!
+    </div>
+
+    <button class="btn-checkout" onclick="pesanSekarang()">
+      Pesan Sekarang 🔥
+    </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ================= TOAST NOTIFIKASI ================= -->
+<div class="toast" id="toast">✓ Ditambahkan ke keranjang</div>
+
+<script>
+  /* =========================================================
+     KONFIGURASI — GANTI NOMOR WHATSAPP RESTORAN DI SINI
+     ========================================================= */
+  const NOMOR_WA = "6281234567890"; // ✏️ ganti dengan nomor WhatsApp restoran kamu (format 62xxxx)
+
+  /* =========================================================
+     STATE KERANJANG
+     ========================================================= */
+  let cart = {}; // { nama: {price, qty} }
+  let selectedPayment = null;
+
+  function formatRupiah(num){
+    return "Rp " + num.toLocaleString("id-ID");
+  }
+
+  function addToCart(btn){
+    const card = btn.closest(".menu-card");
+    const name = card.dataset.name;
+    const price = parseInt(card.dataset.price, 10);
+
+    if(!cart[name]) cart[name] = {price, qty:0};
+    cart[name].qty += 1;
+
+    btn.classList.remove("pop");
+    void btn.offsetWidth; // restart animasi
+    btn.classList.add("pop");
+
+    renderCart();
+    showToast(`✓ ${name} ditambahkan ke keranjang`);
+  }
+
+  function changeQty(name, delta){
+    if(!cart[name]) return;
+    cart[name].qty += delta;
+    if(cart[name].qty <= 0) delete cart[name];
+    renderCart();
+  }
+
+  function removeItem(name){
+    delete cart[name];
+    renderCart();
+  }
+
+  function renderCart(){
+    const body = document.getElementById("cartBody");
+    const entries = Object.entries(cart);
+    let total = 0;
+    let itemCount = 0;
+
+    if(entries.length === 0){
+      body.innerHTML = '<p class="cart-empty" id="cartEmptyMsg">Keranjang masih kosong. Yuk pilih menu favoritmu! 🍽️</p>';
+    } else {
+      body.innerHTML = entries.map(([name, item]) => {
+        total += item.price * item.qty;
+        itemCount += item.qty;
+        return `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <h5>${name}</h5>
+              <span>${formatRupiah(item.price)}</span>
+              <div class="qty-control">
+                <button onclick="changeQty('${name}', -1)">−</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty('${name}', 1)">+</button>
+              </div>
+              <div class="remove-item" onclick="removeItem('${name}')">Hapus</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("cartTotal").textContent = formatRupiah(total);
+
+    const badge = document.getElementById("cartBadge");
+    badge.textContent = itemCount;
+    badge.classList.toggle("show", itemCount > 0);
+    document.getElementById("fabCount").textContent = itemCount;
+  }
+
+  /* =========================================================
+     PILIH METODE PEMBAYARAN
+     ========================================================= */
+  function selectPayment(method, el){
+    selectedPayment = method;
+
+    document.querySelectorAll(".payment-option").forEach(opt => opt.classList.remove("active"));
+    el.classList.add("active");
+
+    document.querySelectorAll(".payment-detail").forEach(d => d.classList.remove("show"));
+    const key = "detail" + method.replace(/\s+/g, "");
+    const box = document.getElementById(key);
+    if(box) box.classList.add("show");
+  }
+
+  function copyNumber(number){
+    navigator.clipboard.writeText(number).then(() => {
+      showToast("✓ Nomor disalin: " + number);
+    }).catch(() => {
+      showToast("Nomor: " + number);
+    });
+  }
+
+  /* =========================================================
+     TOGGLE SIDEBAR KERANJANG
+     ========================================================= */
+  function toggleCart(open){
+    document.getElementById("cartSidebar").classList.toggle("open", open);
+    document.getElementById("overlay").classList.toggle("open", open);
+  }
+
+  /* =========================================================
+     TOAST
+     ========================================================= */
+  let toastTimer;
+  function showToast(msg){
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+  }
+
+  /* =========================================================
+     FILTER TAB MENU
+     ========================================================= */
+  function filterMenu(category, btn){
+    document.querySelectorAll(".menu-tab").forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+
+    document.querySelectorAll(".menu-card").forEach(card => {
+      const match = category === "semua" || card.dataset.category === category;
+      card.classList.toggle("visible", match);
+    });
+  }
+
+  /* =========================================================
+     PESAN SEKARANG — validasi + generate pesan WhatsApp
+     ========================================================= */
+  function pesanSekarang(){
+    const entries = Object.entries(cart);
+    if(entries.length === 0){
+      showToast("⚠️ Keranjang masih kosong");
+      return;
+    }
+
+    const nama = document.getElementById("inputNama").value.trim();
+    const hp = document.getElementById("inputHp").value.trim();
+    const alamat = document.getElementById("inputAlamat").value.trim();
+    const catatan = document.getElementById("inputCatatan").value.trim();
+
+    if(!nama || !hp || !alamat){
+      showToast("⚠️ Lengkapi nama, HP, dan alamat dulu ya");
+      return;
+    }
+
+    if(!selectedPayment){
+      showToast("⚠️ Pilih metode pembayaran dulu ya");
+      return;
+    }
+
+    let total = 0;
+    let daftar = entries.map(([name, item]) => {
+      total += item.price * item.qty;
+      return `- ${name} x${item.qty} (${formatRupiah(item.price * item.qty)})`;
+    }).join("\n");
+
+    const pesan =
+`Halo, saya ingin memesan:
+
+${daftar}
+
+Total: ${formatRupiah(total)}
+
+Nama: ${nama}
+No HP: ${hp}
+Alamat: ${alamat}
+Catatan: ${catatan || "-"}
+Metode Pembayaran: ${selectedPayment}`;
+
+    const url = `https://wa.me/${NOMOR_WA}?text=${encodeURIComponent(pesan)}`;
+    window.open(url, "_blank");
+
+    showToast("🎉 Pesanan dikirim, menunggu konfirmasi WhatsApp");
+  }
+
+  /* =========================================================
+     NAVBAR SHRINK ON SCROLL
+     ========================================================= */
+  const navbar = document.getElementById("navbar");
+  window.addEventListener("scroll", () => {
+    navbar.classList.toggle("scrolled", window.scrollY > 40);
+  });
+
+  /* =========================================================
+     SCROLL REVEAL ANIMATION
+     ========================================================= */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add("in-view");
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+  /* =========================================================
+     TILT 3D PADA KARTU MENU SAAT HOVER MOUSE
+     ========================================================= */
+  document.querySelectorAll(".menu-card").forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const rotateX = ((y / rect.height) - 0.5) * -14;
+      const rotateY = ((x / rect.width) - 0.5) * 14;
+      card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(900px) rotateX(0) rotateY(0) scale(1)";
+    });
+  });
+
+  /* inisialisasi tampilan keranjang */
+  renderCart();
+</script>
 </body>
 </html>
